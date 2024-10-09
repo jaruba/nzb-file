@@ -1,0 +1,45 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+dependencies:
+  mime:
+    specifier: ^4.0.4
+    version: 4.0.4
+  nntp-js:
+    specifier: ^1.0.0
+    version: 1.0.0
+  nzb-parser:
+    specifier: ^1.0.1
+    version: 1.0.1
+
+packages:
+
+  /fast-xml-parser@4.5.0:
+    resolution: {integrity: sha512-/PlTQCI96+fZMAOLMZK4CWG1ItCbfZ/0jx7UIJFChPNrx7tcEgerUgWbeieCM9MfHInUDyK8DWYZ+YrywDJuTg==}
+    hasBin: true
+    dependencies:
+      strnum: 1.0.5
+    dev: false
+
+  /mime@4.0.4:
+    resolution: {integrity: sha512-v8yqInVjhXyqP6+Kw4fV3ZzeMRqEW6FotRsKXjRS5VMTNIuXsdRoAvklpoRgSqXm6o9VNH4/C0mgedko9DdLsQ==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dev: false
+
+  /nntp-js@1.0.0:
+    resolution: {integrity: sha512-9KWdkJlScAEP7EA8bFwZcNw/N1oCHyM5BSynAaK4UF8idOf21d7dbEsSdDsV+jVBUprkOrAoB1ZOWnlij06thg==}
+    dev: false
+
+  /nzb-parser@1.0.1:
+    resolution: {integrity: sha512-91ZU6JUtP+ESVh+qb2zwUMjPLzxUEjY351dHvV7Oxw3MBm9nUupoIA530n1mvHZ1UqoMoBkoZlR3ulPDFDbREg==}
+    dependencies:
+      fast-xml-parser: 4.5.0
+    dev: false
+
+  /strnum@1.0.5:
+    resolution: {integrity: sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA==}
+    dev: false

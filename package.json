@@ -1,0 +1,17 @@
+{
+  "name": "nzb-file",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mime": "^4.0.4",
+    "nntp-js": "^1.0.0",
+    "nzb-parser": "^1.0.1"
+  }
+}

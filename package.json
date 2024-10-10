@@ -1,17 +1,23 @@
 {
   "name": "nzb-file",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "Convert NZB files to W3C File-like objects. Supports streaming.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --import tsx --test ./test/*.ts"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["nzb", "file", "w3c", "file-like", "stream"],
+  "author": "ThaUnknown",
   "license": "ISC",
   "dependencies": {
     "mime": "^4.0.4",
-    "nntp-js": "^1.0.0",
-    "nzb-parser": "^1.0.1"
+    "nntp-js": "^1.0.1",
+    "nzb-parser": "^1.0.1",
+    "yencode": "^1.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.5",
+    "tsx": "^4.19.1"
   }
 }

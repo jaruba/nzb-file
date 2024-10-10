@@ -1,13 +1,13 @@
 import parse from 'nzb-parser'
 import { NNTP } from 'nntp-js'
+import yencode from 'yencode'
 
 import mime from 'mime/lite'
 import { Segment } from 'nzb-parser/src/models.ts'
 
-const textDecoder = new TextDecoder()
-const textEncoder = new TextEncoder()
+const textDecoder = new TextDecoder('ascii')
 
-class NNTPFile implements File {
+export class NNTPFile implements File {
   // nntp stuff
   nntp: NNTP
   segments: Segment[]
@@ -15,6 +15,7 @@ class NNTPFile implements File {
   lastModified: number
   name: string
   size: number
+  segmentSize: number
   type: string
   webkitRelativePath: string
   lastModifiedDate: Date
@@ -34,6 +35,7 @@ class NNTPFile implements File {
     this.name = opts.name!
     this.webkitRelativePath = opts.name!
     this.size = opts.size!
+    this.segmentSize = opts.segmentSize!
     this._trueSize = opts._trueSize ?? opts.size!
     this._start = opts._start ?? 0
     this._end = opts._end ?? this.size
@@ -45,26 +47,26 @@ class NNTPFile implements File {
     let offset = 0
     for (const segment of this.segments) {
       if (offset >= this._end) break
-      if (offset + segment.size < this._start) {
-        offset += segment.size
+      if (offset + this.segmentSize < this._start) {
+        offset += this.segmentSize
         continue
       }
       requiredSegments.push(segment)
-      offset += segment.size
+      offset += this.segmentSize
     }
     offset = 0
 
     for (const segment of requiredSegments) {
-      const [, text] = await this.nntp.body(segment.number)
-      const data = textEncoder.encode(text)
-      if (offset + segment.size > this._end) {
-        yield data.subarray(0, this._end - offset)
+      const { data } = await this.nntp.body(`<${segment.messageId}>`)
+      const decoded = yencode.from_post(Buffer.from(data))
+      if (offset + this.segmentSize > this._end) {
+        yield decoded.data.subarray(0, this._end - offset)
       } else if (offset < this._start) {
-        yield data.subarray(this._start - offset)
+        yield decoded.data.subarray(this._start - offset)
       } else {
-        yield data
+        yield decoded.data
       }
-      offset += segment.size
+      offset += this.segmentSize
     }
   }
 
@@ -125,11 +127,22 @@ class NNTPFile implements File {
   }
 }
 
-export default function fromNZB (string: string) {
+export default async function fromNZB (string: string, domain: string, port: number, login: string, password: string) {
   const { files } = parse(string)
   const fileList = []
-  for (const { name, size, segments, datetime } of files) {
-    fileList.push(new NNTPFile({ name, size, segments, lastModifiedDate: datetime }))
+  const nntp = new NNTP(domain, 119)
+  await nntp.connect()
+
+  const caps = nntp.caps!
+  if ('STARTTLS' in caps) {
+    await nntp.starttls()
+  }
+  await nntp.login(login, password)
+  await nntp.group('alt.binaries.multimedia.anime.highspeed')
+  for (const { name, segments, datetime } of files) {
+    const { data } = await nntp.body(`<${segments[0].messageId}>`)
+    const { props } = yencode.from_post(Buffer.from(data))
+    fileList.push(new NNTPFile({ name, size: parseInt(props.begin.size), segments, segmentSize: parseInt(props.part.end), lastModifiedDate: datetime, nntp }))
   }
 
   return fileList

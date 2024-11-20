@@ -26,8 +26,8 @@
   "license": "ISC",
   "dependencies": {
     "mime": "^4.0.4",
-    "nntp-js": "^1.0.1",
-    "nzb-parser": "^1.0.1",
+    "nntp-js": "jaruba/nntp-js",
+    "nzb-parser": "jaruba/nzb-parser",
     "yencode": "^1.2.3",
     "@types/node": "^22.7.5",
     "tsx": "^4.19.1",

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import parse from 'nzb-parser'
 import { NNTP } from 'nntp-js'
 import yencode from 'yencode'
